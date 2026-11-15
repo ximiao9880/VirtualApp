@@ -1,8 +1,6 @@
 name: build-apk
 on:
   workflow_dispatch:
-  push:
-    branches: [master]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,10 +12,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
       - name: Install SDK packages
         run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
           sdkmanager "platforms;android-33" "build-tools;33.0.2" "platform-tools"
       - name: Set up JDK 11 for build
         uses: actions/setup-java@v4
